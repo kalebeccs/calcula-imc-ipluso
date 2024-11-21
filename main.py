@@ -1,4 +1,5 @@
 from db import *
+from interface import *
 from users import *
 
 lista_users = [
@@ -9,10 +10,13 @@ lista_users = [
     ('Lucia Mendes', 30, 1.70, 68.2)
 ]
 
-criar_tabela_users(conn())
+criar_tabela_users(conn(), True)
 
 inserir_users(conn(), lista_users)
 
 print_IMC(consulta_por_nome(cursor(), 'Ana Silva'))
+
+# usuario_insere_novos_usuarios(conn())
+# usuario_pesquisa_imc(cursor())
 
 close()
