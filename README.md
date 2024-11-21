@@ -1,46 +1,49 @@
-# calcula IMC
+# Sistema de Gerenciamento de Usuários com Cálculo de IMC
 
-Este projeto é um sistema simples de gerenciamento de usuários utilizando **Python** e **SQLite**. Ele permite criar uma tabela de usuários, inserir dados e realizar consultas específicas, como calcular o IMC de um usuário.
+Este projeto é uma aplicação simples em Python que gerencia usuários, realiza cálculos do Índice de Massa Corporal (IMC) e utiliza **SQLite** como banco de dados. Ele inclui uma interface interativa para que usuários possam inserir dados e consultar informações diretamente do banco.
 
 ## Funcionalidades
 
-- **Criação de Tabela**: Cria a tabela `users` no banco de dados SQLite.
-- **Inserção de Dados**: Adiciona múltiplos usuários à tabela.
-- **Consulta de Usuários**: Permite buscar usuários pelo nome.
-- **Cálculo de IMC**: Calcula e exibe o Índice de Massa Corporal (IMC) de um usuário específico.
+- **Criação de Tabela:** Cria ou reseta a tabela `users` no banco de dados.
+- **Inserção de Usuários:** Insere uma lista inicial de usuários ou novos usuários fornecidos pelo usuário.
+- **Consulta de Dados:** Permite pesquisar usuários pelo nome e calcular seu IMC.
+- **Interface Interativa (opcional):** Possui funções que permitem a interação do usuário para adicionar novos registros e realizar consultas.
 
 ## Estrutura do Projeto
 
-- **`main.py`**: Arquivo principal que coordena as operações do sistema.
-- **`db.py`**: Contém funções para manipulação do banco de dados, como criação de tabelas e conexões.
-- **`users.py`**: Define funções relacionadas aos usuários, como inserção, consulta e cálculo do IMC.
+- **`main.py`**: Arquivo principal que executa as operações do sistema.
+- **`db.py`**: Contém funções para gerenciar o banco de dados SQLite, como criação de tabelas e conexões.
+- **`interface.py`**: Implementa funções interativas para inserção de novos usuários e consulta de IMC.
+- **`users.py`**: Define funções relacionadas ao gerenciamento de usuários, como inserção, consulta e cálculo do IMC.
 
 ## Pré-requisitos
 
-- Python 3.x instalado.
-- Biblioteca SQLite3 (inclusa no Python).
+- **Python 3.x**
+- **SQLite** (biblioteca inclusa no Python)
 
-## Como Executar
+## Como Usar
 
-1. Clone este repositório:
+1. Clone o repositório:
    ```bash
-   git clone https://github.com/seuusuario/projeto-gerenciador-usuarios.git
-   cd projeto-gerenciador-usuarios
+   git clone https://github.com/seuusuario/seuprojeto.git
+   cd seuprojeto
    ```
 
-2. Instale as dependências, se necessário (opcional).
-
-3. Execute o arquivo `main.py`:
+2. Execute o script principal:
    ```bash
    python main.py
    ```
 
+3. Interaja com o sistema conforme necessário. Você pode ativar as funções interativas editando as chamadas comentadas no `main.py`:
+   ```python
+   usuario_insere_novos_usuarios(conn())
+   usuario_pesquisa_imc(cursor())
+   ```
+
 ## Exemplos de Uso
 
-Ao executar o programa, ele:
-
-1. Cria uma tabela chamada `users` no banco de dados.
-2. Insere os seguintes usuários:
+1. O programa inicializa criando ou limpando a tabela `users` no banco de dados.
+2. Insere uma lista de usuários pré-definidos:
    - Ana Silva
    - Carlos Souza
    - Mariana Costa
@@ -57,9 +60,19 @@ Ao executar o programa, ele:
 | `altura`| REAL      | Altura do usuário (m)  |
 | `peso`  | REAL      | Peso do usuário (kg)   |
 
-## Explicação do Código Principal (`main.py`)
+## Funções Disponíveis
 
-- **`criar_tabela_users(conn())`**: Cria a tabela `users` caso não exista.
-- **`inserir_users(conn(), lista_users)`**: Insere uma lista de usuários no banco.
-- **`consulta_por_nome(cursor(), 'Ana Silva')`**: Consulta os dados de um usuário pelo nome.
-- **`print_IMC(...)`**: Calcula e exibe o IMC do usuário.
+### Banco de Dados (`db.py`)
+- `criar_tabela_users(conexao, reset=False)`: Cria a tabela de usuários. Use `reset=True` para apagar os dados existentes.
+- `conn()`: Retorna uma conexão com o banco de dados.
+- `cursor()`: Retorna um cursor para executar comandos SQL.
+- `close()`: Fecha a conexão com o banco de dados.
+
+### Gerenciamento de Usuários (`users.py`)
+- `inserir_users(conexao, lista)`: Insere uma lista de usuários no banco.
+- `consulta_por_nome(cursor, nome)`: Consulta os dados de um usuário pelo nome.
+- `print_IMC(user_data)`: Calcula e exibe o IMC de um usuário.
+
+### Interface Interativa (`interface.py`)
+- `usuario_insere_novos_usuarios(conexao)`: Permite ao usuário inserir novos usuários via terminal.
+- `usuario_pesquisa_imc(cursor)`: Permite ao usuário consultar o IMC de um registro pelo nome via terminal.
