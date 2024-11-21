@@ -1,7 +1,7 @@
 from users import *
 
 def print_IMC(usuario):
-    print(f'\nO usuario: {usuario[1]} tem IMC = {calcula_IMC(usuario)}')
+    print(f'\nO usuario: {usuario[1]} tem IMC = {round(calcula_IMC(usuario), 1)}')
 
 def usuario_pesquisa_imc(cursor):
     nome_pesquisar = input('Insira um nome para saber o IMC: ')
