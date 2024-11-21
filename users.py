@@ -1,5 +1,5 @@
-def criar_tabela_users(conn, drop):
-    if drop:
+def criar_tabela_users(conn, reset):
+    if reset:
         conn.cursor().execute('DROP TABLE IF EXISTS users')
     conn.cursor().execute('''
         CREATE TABLE IF NOT EXISTS users (
