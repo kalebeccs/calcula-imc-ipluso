@@ -1,4 +1,6 @@
-def criar_tabela_users(conn):
+def criar_tabela_users(conn, drop):
+    if drop:
+        conn.cursor().execute('DROP TABLE IF EXISTS users')
     conn.cursor().execute('''
         CREATE TABLE IF NOT EXISTS users (
         pk_user INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +28,3 @@ def consulta_por_nome(cursor, nome_pesquisa):
 
 def calcula_IMC(usuario):
     return usuario[4] / (usuario[3] ** 2)
-
-def print_IMC(usuario):
-    print(f'O usuario: {usuario[1]} tem IMC = {calcula_IMC(usuario)}')
