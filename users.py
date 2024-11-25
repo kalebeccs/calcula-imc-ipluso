@@ -22,6 +22,10 @@ def inserir_users(conn, lista_users):
     for user in lista_users:
         inserir_user(conn, *user)
 
+def ler_users(cursor):
+    cursor.execute('SELECT * FROM users')
+    return cursor.fetchall()
+
 def consulta_por_nome(cursor, nome_pesquisa):
     cursor.execute('SELECT * FROM users WHERE nome = ?', (nome_pesquisa,))
     return cursor.fetchone()
