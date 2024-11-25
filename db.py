@@ -10,3 +10,4 @@ def cursor():
 
 def close():
     _conn.close()
+    
