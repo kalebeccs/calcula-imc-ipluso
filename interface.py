@@ -103,7 +103,7 @@ def consultar_imc_tela(conn):
 
     janela_consultar = ctk.CTkToplevel()
     janela_consultar.title("Consultar IMC")
-    janela_consultar.geometry("420x300")
+    janela_consultar.geometry("420x310")
 
     # Título
     ctk.CTkLabel(janela_consultar, text="Consultar IMC", font=("Arial", 16)).pack(pady=10)
