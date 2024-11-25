@@ -10,13 +10,14 @@ lista_users = [
     ('Lucia Mendes', 30, 1.70, 68.2)
 ]
 
-criar_tabela_users(conn(), True)
+if __name__ == "__main__":
+    criar_tabela_users(conn(), True)
 
-inserir_users(conn(), lista_users)
+    inserir_users(conn(), lista_users)
 
-print_IMC(consulta_por_nome(cursor(), 'Ana Silva'))
+    #print_IMC(consulta_por_nome(cursor(), 'Ana Silva'))
+    #usuario_insere_novos_usuarios(conn())
+    #usuario_pesquisa_imc(cursor())
 
-# usuario_insere_novos_usuarios(conn())
-# usuario_pesquisa_imc(cursor())
-
-close()
+    interface_principal(conn())
+    close()
