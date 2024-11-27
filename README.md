@@ -1,78 +1,86 @@
-# Sistema de Gerenciamento de Usuários com Cálculo de IMC
+# Calcula IMC 📊
 
-Este projeto é uma aplicação simples em Python que gerencia usuários, realiza cálculos do Índice de Massa Corporal (IMC) e utiliza **SQLite** como banco de dados. Ele inclui uma interface interativa para que usuários possam inserir dados e consultar informações diretamente do banco.
+O Calcula IMC é uma aplicação desenvolvida em Python com interface gráfica, que permite gerenciar usuários e calcular o Índice de Massa Corporal (IMC) de forma prática e intuitiva. A aplicação utiliza SQLite3 como banco de dados e CustomTkinter para a interface gráfica.
 
-## Funcionalidades
+## 📋 Funcionalidades
 
-- **Criação de Tabela:** Cria ou reseta a tabela `users` no banco de dados.
-- **Inserção de Usuários:** Insere uma lista inicial de usuários ou novos usuários fornecidos pelo usuário.
-- **Consulta de Dados:** Permite pesquisar usuários pelo nome e calcular seu IMC.
-- **Interface Interativa (opcional):** Possui funções que permitem a interação do usuário para adicionar novos registros e realizar consultas.
+- **Cadastro de Usuários:** Insira informações como nome, idade, altura e peso.
+- **Consulta de IMC:** Realize consultas do IMC por nome e veja a classificação de acordo com os padrões de saúde.
+- **Visualização de Usuários:** Exiba uma tabela com todos os usuários cadastrados e suas informações.
+- **Interface Intuitiva:** Interface gráfica amigável e personalizável , adaptada para diferentes modos claro e escuro.
+- **Armazenamento Local:** Persistência de dados usando o banco de dados SQLite.
 
-## Estrutura do Projeto
+## 🛠️ Tecnologias Utilizadas
 
-- **`main.py`**: Arquivo principal que executa as operações do sistema.
-- **`db.py`**: Contém funções para gerenciar o banco de dados SQLite, como criação de tabelas e conexões.
-- **`interface.py`**: Implementa funções interativas para inserção de novos usuários e consulta de IMC.
-- **`users.py`**: Define funções relacionadas ao gerenciamento de usuários, como inserção, consulta e cálculo do IMC.
+- Python 🐍
+- SQLite3 (banco de dados local)
+- CustomTkinter (interface gráfica)
 
-## Pré-requisitos
+## ⚙️ Como Executar o Projeto
 
-- **Python 3.x**
-- **SQLite** (biblioteca inclusa no Python)
+### Pré-requisitos
 
-## Como Usar
+Certifique-se de ter o **Python 3.10** ou superior instalado e as dependências necessárias.
 
-1. Clone o repositório:
-   ```bash
-   git clone https://github.com/seuusuario/seuprojeto.git
-   cd seuprojeto
-   ```
+### 1. Clone o repositório:
 
-2. Execute o script principal:
-   ```bash
-   python main.py
-   ```
+```bash
+git clone https://github.com/kalebeccs/calcula-imc-ipluso.git
+cd calcula-imc-ipluso
+```
 
-3. Interaja com o sistema conforme necessário. Você pode ativar as funções interativas editando as chamadas comentadas no `main.py`:
-   ```python
-   usuario_insere_novos_usuarios(conn())
-   usuario_pesquisa_imc(cursor())
-   ```
+### 2. Crie um ambiente virtual:
 
-## Exemplos de Uso
+```bash
+python -m venv venv
+source venv/bin/activate  # No Windows, use: venv\Scripts\activate
+```
 
-1. O programa inicializa criando ou limpando a tabela `users` no banco de dados.
-2. Insere uma lista de usuários pré-definidos:
-   - Ana Silva
-   - Carlos Souza
-   - Mariana Costa
-   - João Pereira
-   - Lucia Mendes
-3. Calcula e exibe o IMC de **Ana Silva**.
+### 3. Instale as dependências:
 
-## Estrutura da Tabela `users`
+```bash
+pip install -r requirements.txt
+```
 
-| Campo   | Tipo      | Descrição              |
-|---------|-----------|------------------------|
-| `nome`  | TEXT      | Nome do usuário        |
-| `idade` | INTEGER   | Idade do usuário       |
-| `altura`| REAL      | Altura do usuário (m)  |
-| `peso`  | REAL      | Peso do usuário (kg)   |
+### 4. Execute a aplicação:
 
-## Funções Disponíveis
+```bash
+python src/app.py
+```
 
-### Banco de Dados (`db.py`)
-- `criar_tabela_users(conexao, reset=False)`: Cria a tabela de usuários. Use `reset=True` para apagar os dados existentes.
-- `conn()`: Retorna uma conexão com o banco de dados.
-- `cursor()`: Retorna um cursor para executar comandos SQL.
-- `close()`: Fecha a conexão com o banco de dados.
+## 🗂️ Estrutura do Projeto
 
-### Gerenciamento de Usuários (`users.py`)
-- `inserir_users(conexao, lista)`: Insere uma lista de usuários no banco.
-- `consulta_por_nome(cursor, nome)`: Consulta os dados de um usuário pelo nome.
-- `print_IMC(user_data)`: Calcula e exibe o IMC de um usuário.
+```plaintext
+📁 calcula-imc-ipluso
+├── 📂 assets                 # Recursos visuais
+├── 📂 db
+│   ├── db.py                 # Funções para manipulação do banco de dados
+├── 📂 src
+│   ├── app.py                # Arquivo principal da aplicação
+│   ├── interface.py          # Funções da interface gráfica
+│   ├── users.py              # Gerenciamento de usuários
+│   └── utils.py              # Funções auxiliares
+├── README.md                 # Documentação do projeto
+└── requirements.txt          # Dependências do projeto
+```
 
-### Interface Interativa (`interface.py`)
-- `usuario_insere_novos_usuarios(conexao)`: Permite ao usuário inserir novos usuários via terminal.
-- `usuario_pesquisa_imc(cursor)`: Permite ao usuário consultar o IMC de um registro pelo nome via terminal.
+## 📊 Cálculo de IMC
+
+O cálculo de IMC é realizado pela fórmula:
+
+> IMC = Peso (kg) / [Altura (m)]²
+
+### Classificação do IMC:
+
+| Faixa de IMC   | Classificação      |
+| -------------- | ------------------ |
+| Abaixo de 18,5 | Abaixo do peso     |
+| 18,5 – 24,9    | Peso normal        |
+| 25,0 – 29,9    | Sobrepeso          |
+| 30,0 – 34,9    | Obesidade Grau I   |
+| 35,0 – 39,9    | Obesidade Grau II  |
+| Acima de 40,0  | Obesidade Grau III |
+
+## Preview
+
+![Preview](assets/preview.png)

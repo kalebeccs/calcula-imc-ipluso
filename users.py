@@ -28,3 +28,4 @@ def consulta_por_nome(cursor, nome_pesquisa):
 
 def calcula_IMC(usuario):
     return usuario[4] / (usuario[3] ** 2)
+
