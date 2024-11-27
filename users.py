@@ -30,5 +30,5 @@ def consulta_por_nome(cursor, nome_pesquisa):
     cursor.execute('SELECT * FROM users WHERE nome = ?', (nome_pesquisa,))
     return cursor.fetchone()
 
-def calcula_IMC(usuario):
-    return usuario[4] / (usuario[3] ** 2)
+def calcula_IMC(peso, altura):
+    return peso / altura ** 2
