@@ -73,7 +73,6 @@ def tabela_usuarios(conn, janela):
         # Exibe mensagem caso não haja usuários cadastrados
         ctk.CTkLabel(frame_tabela, text="Nenhum usuário cadastrado!", font=("Arial", 12), anchor="center").grid(row=1, column=0, columnspan=5, pady=10)
 
-
 def consultar_imc(conn, janela):
     def consultar():
         nome = entry_nome.get().strip()  # Remove espaços extras
