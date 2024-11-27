@@ -9,26 +9,37 @@ ctk.set_appearance_mode("System")  # Modo Claro ou Escuro
 ctk.set_default_color_theme("blue") 
 
 def criar_janela():
+    """
+    Cria e configura a janela principal da aplicação.
+    Retorna:
+    ctk.CTk: A janela principal configurada.
+    """
     janela = ctk.CTk()
-    janela.title("Gerenciador de Usuários - IMC")
-    janela.geometry("640x610")  # Largura x Altura
+    janela.title("Gerenciador de Usuários - IMC")  # Define o título da janela
+    janela.geometry("640x610")  # Define o tamanho da janela (Largura x Altura)
     return janela
 
 def interface_principal(conn):
+    """
+    Cria e exibe a interface principal do sistema de IMC.
+    Parâmetros:
+    conn (sqlite3.Connection): Conexão com o banco de dados SQLite.
+    A interface principal inclui:
+    - Um título de boas-vindas.
+    - Uma tabela de usuários.
+    - Uma opção para consultar o IMC dos usuários.
+    - Um botão para inserir novos usuários.
+    - Um botão para sair da aplicação.
+    """
     janela = criar_janela()
 
-    # Título
     titulo = ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20))
     titulo.pack(pady=10)
 
     tabela_usuarios(conn, janela)
 
-    # Botões para ações
     consultar_imc(conn, janela)
-    # btn_consultar = ctk.CTkButton(janela, text="Consultar IMC", command=lambda: consultar_imc_tela(conn))
-    # btn_consultar.pack(pady=10)
 
-    # btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario_tela(conn))
     btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario(conn, janela))
     btn_inserir.pack(pady=10)
 
@@ -38,34 +49,31 @@ def interface_principal(conn):
     janela.mainloop()
 
 def tabela_usuarios(conn, janela):
-    # Frame para a tabela de usuários
-                   
+    # Cabeçalhos da tabela
     frame_cabecalho = ctk.CTkFrame(janela, width=350, height=30)
     frame_cabecalho.pack(pady=(10, 0), padx=10)
-    
-    frame_tabela = ctk.CTkScrollableFrame(janela, width=350, height=250)
-    frame_tabela.pack(pady=(0, 10), padx=10)
-    
-    # Cabeçalhos da tabela
     ctk.CTkLabel(frame_cabecalho, text="Nome", font=("Arial", 12, "bold"), anchor="w", width=140).grid(row=0, column=1, padx=(10,5), pady=2)
     ctk.CTkLabel(frame_cabecalho, text="Idade", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=2, padx=5, pady=2)
     ctk.CTkLabel(frame_cabecalho, text="Altura (m)", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=3, padx=5, pady=2)
     ctk.CTkLabel(frame_cabecalho, text="Peso (kg)", font=("Arial", 12, "bold"), anchor="center", width=82).grid(row=0, column=4, padx=5, pady=2)
 
-    # Função para carregar usuários na tabela
-    def carregar_tabela():
-        users = ler_users(conn.cursor())
-        if users:
-            for i, user in enumerate(users):
-                ctk.CTkLabel(frame_tabela, text=f"{user[1]}", anchor="w", width=150).grid(row=i+1, column=1, padx=5, pady=2)
-                ctk.CTkLabel(frame_tabela, text=f"{user[2]}", anchor="w", width=50).grid(row=i+1, column=2, padx=5, pady=2)
-                ctk.CTkLabel(frame_tabela, text=f"{user[3]:.2f}", anchor="center", width=50).grid(row=i+1, column=3, padx=5, pady=2)
-                ctk.CTkLabel(frame_tabela, text=f"{user[4]:.2f}", anchor="center", width=50).grid(row=i+1, column=4, padx=5, pady=2)
-        else:
-            ctk.CTkLabel(frame_tabela, text="Nenhum usuário cadastrado!", font=("Arial", 12), anchor="center").grid(row=1, column=0, columnspan=5, pady=10)
+    # Frame para a tabela de usuários
+    frame_tabela = ctk.CTkScrollableFrame(janela, width=350, height=250)
+    frame_tabela.pack(pady=(0, 10), padx=10)
 
-    # Chamar a função para carregar a tabela ao iniciar
-    carregar_tabela()
+    # Carrega usuários na tabela
+    users = ler_users(conn.cursor())
+    if users:
+        for i, user in enumerate(users):
+            # Adiciona os dados dos usuários na tabela
+            ctk.CTkLabel(frame_tabela, text=f"{user[1]}", anchor="w", width=150).grid(row=i+1, column=1, padx=5, pady=2)
+            ctk.CTkLabel(frame_tabela, text=f"{user[2]}", anchor="w", width=50).grid(row=i+1, column=2, padx=5, pady=2)
+            ctk.CTkLabel(frame_tabela, text=f"{user[3]:.2f}", anchor="center", width=50).grid(row=i+1, column=3, padx=5, pady=2)
+            ctk.CTkLabel(frame_tabela, text=f"{user[4]:.2f}", anchor="center", width=50).grid(row=i+1, column=4, padx=5, pady=2)
+    else:
+        # Exibe mensagem caso não haja usuários cadastrados
+        ctk.CTkLabel(frame_tabela, text="Nenhum usuário cadastrado!", font=("Arial", 12), anchor="center").grid(row=1, column=0, columnspan=5, pady=10)
+
 
 def consultar_imc(conn, janela):
     def consultar():
@@ -169,18 +177,14 @@ def inserir_usuario(conn, janela):
 def carregar_interface_principal(conn, janela):
     for widget in janela.winfo_children():
         widget.destroy()
-    # Título
+
     titulo = ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20))
     titulo.pack(pady=10)
 
     tabela_usuarios(conn, janela)
 
-    # Botões para ações
     consultar_imc(conn, janela)
-    # btn_consultar = ctk.CTkButton(janela, text="Consultar IMC", command=lambda: consultar_imc_tela(conn))
-    # btn_consultar.pack(pady=10)
 
-    # btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario_tela(conn))
     btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario(conn, janela))
     btn_inserir.pack(pady=10)
 
