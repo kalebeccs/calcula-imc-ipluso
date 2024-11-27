@@ -11,7 +11,7 @@ ctk.set_default_color_theme("blue")
 def criar_janela():
     janela = ctk.CTk()
     janela.title("Gerenciador de Usuários - IMC")
-    janela.geometry("640x480")  # Largura x Altura
+    janela.geometry("640x510")  # Largura x Altura
     return janela
 
 def interface_principal(conn):
@@ -55,7 +55,7 @@ def interface_principal(conn):
     btn_consultar.pack(pady=10)
 
     btn_sair = ctk.CTkButton(janela, text="Sair", command=janela.quit)
-    btn_sair.pack(pady=20)
+    btn_sair.pack(pady=10)
 
     janela.mainloop()
 
