@@ -4,23 +4,6 @@ from tkinter import messagebox
 from db import *
 from users import *
 
-def print_IMC(usuario):
-    print(f'\nO usuario: {usuario[1]} tem IMC = {calcula_IMC(usuario):.1f}')
-
-def usuario_pesquisa_imc(cursor):
-    nome_pesquisar = input('Insira um nome para saber o IMC: ')
-    print_IMC(consulta_por_nome(cursor, nome_pesquisar))
-
-def usuario_insere_novos_usuarios(conn):
-    num_users = int(input('Informe quantos usuarios deseja cadastrar: '))
-    for num in range(num_users):
-        print(f'\nInserindo dados para o usuario: {num+1}')
-        nome = input('Insira um nome: ')
-        idade = int(input('Insira a idade: '))
-        altura = float(input('Insira a altura: '))
-        peso = float(input('Insira o peso: '))
-        inserir_user(conn, nome, idade, altura, peso)
-
 # Configurando o tema do CustomTkinter
 ctk.set_appearance_mode("System")  # Modo Claro ou Escuro
 ctk.set_default_color_theme("blue") 
@@ -93,7 +76,7 @@ def consultar_imc_tela(conn):
 
         user_data = consulta_por_nome(conn.cursor(), nome)
         if user_data:
-            imc = calcula_IMC(user_data)
+            imc = calcula_IMC(user_data[4], user_data[3])
             lbl_resultado.configure(text=f"O IMC de {nome} é: {imc:.1f}", text_color="white")
         else:
             lbl_resultado.configure(text="Erro: Usuário não encontrado!", text_color="red")
