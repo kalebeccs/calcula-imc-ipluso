@@ -1,53 +1,120 @@
+import sqlite3
 import customtkinter as ctk
-
-from users import *
-from utils import *
+from users import inserir_user, ler_users, consulta_por_nome
+from utils import calcula_IMC, classifica_IMC
 
 # Configurando o tema do CustomTkinter
-ctk.set_appearance_mode("System")  # Modo Claro ou Escuro
+ctk.set_appearance_mode("System")
 ctk.set_default_color_theme("blue") 
 
 def criar_janela():
     """
     Cria e configura a janela principal da aplicação.
-    Retorna:
-    ctk.CTk: A janela principal configurada.
+    :return: ctk.CTk: A janela principal configurada.
     """
     janela = ctk.CTk()
-    janela.title("Gerenciador de Usuários - IMC")  # Define o título da janela
-    janela.geometry("640x610")  # Define o tamanho da janela (Largura x Altura)
+    janela.title("Gerenciador de Usuários - IMC")
+    janela.geometry("640x610")
     return janela
 
-def interface_principal(conn):
+def interface_principal(conn:sqlite3.Connection):
     """
-    Cria e exibe a interface principal do sistema de IMC.
-    Parâmetros:
-    conn (sqlite3.Connection): Conexão com o banco de dados SQLite.
-    A interface principal inclui:
-    - Um título de boas-vindas.
-    - Uma tabela de usuários.
-    - Uma opção para consultar o IMC dos usuários.
-    - Um botão para inserir novos usuários.
-    - Um botão para sair da aplicação.
+    Interface principal do programa. Gerencia a exibição inicial e transições de tela.
+    :param conn: Conexão com o banco de dados.
+    :return: None
     """
     janela = criar_janela()
-
-    titulo = ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20))
-    titulo.pack(pady=10)
-
-    tabela_usuarios(conn, janela)
-
-    consultar_imc(conn, janela)
-
-    btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario(conn, janela))
-    btn_inserir.pack(pady=10)
-
-    btn_sair = ctk.CTkButton(janela, text="Sair", command=janela.destroy)
-    btn_sair.pack(pady=10)
-
+    carregar_tela_principal(conn, janela)
     janela.mainloop()
 
-def tabela_usuarios(conn, janela):
+def carregar_tela_principal(conn:sqlite3.Connection, janela:ctk.CTk):
+    """
+    Carrega a tela principal na janela fornecida.
+    :param conn: Conexão com o banco de dados.
+    :param janela: Janela onde a tela principal será carregada.
+    :return: None
+    """
+    limpar_tela(janela)
+
+    # Título da janela
+    ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20)).pack(pady=10)
+
+    tabela_usuarios(conn, janela)
+    consultar_imc(conn, janela)
+
+    # Botão para inserir usuário
+    ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: carregar_tela_inserir(conn, janela)).pack(pady=10)
+
+    # Botão para sair
+    ctk.CTkButton(janela, text="Sair", command=janela.destroy).pack(pady=10)
+
+def carregar_tela_inserir(conn:sqlite3.Connection, janela:ctk.CTk):
+    """
+    Carrega a tela de inserção de usuário.
+    :param conn: Conexão com o banco de dados.
+    :param janela: Janela onde a tela de inserção será exibida.
+    :return: None
+    """
+    def salvar_usuario():
+        # Obter dados dos campos de entrada
+        nome = campos["Nome"].get().strip()
+        idade = int(campos["Idade"].get()) if campos["Idade"].get() else None
+        altura = float(campos["Altura (m)"].get()) if campos["Altura (m)"].get() else None
+        peso = float(campos["Peso (kg)"].get()) if campos["Peso (kg)"].get() else None
+
+        if not nome or not idade or not altura or not peso:
+            lbl_resultado.configure(text="Erro: Preencha todos os campos!", text_color="gray")
+            return
+
+        # Limpar campos
+        for campo in campos.values():
+            campo.delete(0, "end")
+
+        # Focus no campo de nome
+        campos["Nome"].focus()
+
+        # Inserir no banco de dados
+        inserir_user(conn, nome, idade, altura, peso)
+
+        # Atualizar a mensagem de status
+        lbl_resultado.configure(text=f"Usuário {nome} inserido com sucesso!", text_color="white")
+        # Limpar mensagem de status após 5 segundos
+        janela.after(5000, lambda: lbl_resultado.configure(text=""))
+
+    limpar_tela(janela)
+
+    # Título da tela
+    ctk.CTkLabel(janela, text="Cadastro de usuarios", font=("Arial", 20)).pack(pady=10)
+
+    # Campos de entrada
+    campos = {
+        "Nome": ctk.CTkEntry(janela),
+        "Idade": ctk.CTkEntry(janela),
+        "Altura (m)": ctk.CTkEntry(janela),
+        "Peso (kg)": ctk.CTkEntry(janela)
+    }
+
+    for label, entry in campos.items():
+        ctk.CTkLabel(janela, text=label + ":").pack()
+        entry.pack()
+
+    # Botão para salvar
+    ctk.CTkButton(janela, text="Cadastrar", command=salvar_usuario).pack(pady=(20, 10))
+
+    # Botão para voltar
+    ctk.CTkButton(janela, text="Voltar", command=lambda: carregar_tela_principal(conn, janela)).pack(pady=10)
+
+    # Label para exibir o status
+    lbl_resultado = ctk.CTkLabel(janela, text="", font=("Arial", 14), anchor="center", width=350)
+    lbl_resultado.pack(pady=10)
+
+def tabela_usuarios(conn:sqlite3.Connection, janela:ctk.CTk):
+    """
+    Exibe a tabela de usuários na interface principal.
+    :param conn: Conexão com o banco de dados.
+    :param janela: Janela onde a tabela será exibida.
+    :return: None
+    """
     # Cabeçalhos da tabela
     frame_cabecalho = ctk.CTkFrame(janela, width=350, height=30)
     frame_cabecalho.pack(pady=(10, 0), padx=10)
@@ -73,7 +140,13 @@ def tabela_usuarios(conn, janela):
         # Exibe mensagem caso não haja usuários cadastrados
         ctk.CTkLabel(frame_tabela, text="Nenhum usuário cadastrado!", font=("Arial", 12), anchor="center").grid(row=1, column=0, columnspan=5, pady=10)
 
-def consultar_imc(conn, janela):
+def consultar_imc(conn:sqlite3.Connection, janela:ctk.CTk):
+    """
+    Exibe a funcionalidade de consulta de IMC.
+    :param conn: Conexão com o banco de dados.
+    :param janela: Janela onde a funcionalidade será exibida.
+    :return: None
+    """
     def consultar():
         nome = entry_nome.get().strip()  # Remove espaços extras
         if not nome:  # Valida se o campo não está vazio
@@ -112,81 +185,11 @@ def consultar_imc(conn, janela):
     lbl_resultado = ctk.CTkLabel(frame_consulta, text="", font=("Arial", 14), anchor="center", width=350)
     lbl_resultado.grid(row=2, column=0, columnspan=2, pady=10)
 
-def inserir_usuario(conn, janela):
-    def salvar_usuario():
-        nome = entry_nome.get()
-        idade = int(entry_idade.get()) if entry_idade.get() else None
-        altura = float(entry_altura.get()) if entry_altura.get() else None
-        peso = float(entry_peso.get()) if entry_peso.get() else None
-
-        if not nome or not idade or not altura or not peso:
-            lbl_resultado.configure(text="Erro: Preencha todos os campos!", text_color="gray")
-            return
-
-        # Limpar campos
-        entry_nome.delete(0, "end")
-        entry_idade.delete(0, "end")
-        entry_altura.delete(0, "end")
-        entry_peso.delete(0, "end")
-
-        # Focus no campo de nome
-        entry_nome.focus()
-
-        # Inserir no banco de dados
-        inserir_user(conn, nome, idade, altura, peso)
-
-        # Atualizar a mensagem de status
-        lbl_resultado.configure(text=f"Usuário {nome} inserido com sucesso!", text_color="white")
-        # Limpar mensagem de status após 5 segundos
-        janela.after(5000, lambda: lbl_resultado.configure(text=""))
-
-    # Limpar a janela principal
+def limpar_tela(janela:ctk.CTk):
+    """
+    Remove todos os widgets da janela fornecida.
+    :param janela: A janela ou frame cujos widgets devem ser removidos.
+    :return: None
+    """
     for widget in janela.winfo_children():
         widget.destroy()
-
-    titulo = ctk.CTkLabel(janela, text="Cadastro de usuarios", font=("Arial", 20))
-    titulo.pack(pady=10)
-
-    ctk.CTkLabel(janela, text="Nome:").pack()
-    entry_nome = ctk.CTkEntry(janela)
-    entry_nome.pack()
-
-    ctk.CTkLabel(janela, text="Idade:").pack()
-    entry_idade = ctk.CTkEntry(janela)
-    entry_idade.pack()
-
-    ctk.CTkLabel(janela, text="Altura (m):").pack()
-    entry_altura = ctk.CTkEntry(janela)
-    entry_altura.pack()
-
-    ctk.CTkLabel(janela, text="Peso (kg):").pack()
-    entry_peso = ctk.CTkEntry(janela)
-    entry_peso.pack()
-
-    ctk.CTkButton(janela, text="Cadastrar", command=salvar_usuario).pack(pady=(20, 10))
-
-    btn_sair = ctk.CTkButton(janela, text="Voltar", command=lambda: carregar_interface_principal(conn, janela))
-    btn_sair.pack(pady=10)
-
-    # Label para exibir o status
-    lbl_resultado = ctk.CTkLabel(janela, text="", font=("Arial", 14), anchor="center", width=350)
-    lbl_resultado.pack(pady=10)
-
-def carregar_interface_principal(conn, janela):
-    for widget in janela.winfo_children():
-        widget.destroy()
-
-    titulo = ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20))
-    titulo.pack(pady=10)
-
-    tabela_usuarios(conn, janela)
-
-    consultar_imc(conn, janela)
-
-    btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario(conn, janela))
-    btn_inserir.pack(pady=10)
-
-    btn_sair = ctk.CTkButton(janela, text="Sair", command=janela.destroy)
-    btn_sair.pack(pady=10)
-
-    janela.mainloop()
