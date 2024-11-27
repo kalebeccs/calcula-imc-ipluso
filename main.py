@@ -21,4 +21,5 @@ if __name__ == "__main__":
     inserir_users(conn(), lista_users)
 
     interface_principal(conn())
+    
     close()
