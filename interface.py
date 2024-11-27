@@ -28,6 +28,9 @@ def interface_principal(conn):
     btn_consultar = ctk.CTkButton(janela, text="Consultar IMC", command=lambda: consultar_imc_tela(conn))
     btn_consultar.pack(pady=10)
 
+    btn_consultar_users = ctk.CTkButton(janela, text="Ver Usuários Cadastrados", command=lambda: consultar_users_tela(conn))
+    btn_consultar_users.pack(pady=10)
+
     btn_sair = ctk.CTkButton(janela, text="Sair", command=janela.quit)
     btn_sair.pack(pady=20)
 
