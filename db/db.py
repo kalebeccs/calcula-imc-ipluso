@@ -10,6 +10,7 @@ except sqlite3.Error as e:
 def conn():
     """
     Retorna a conexão com o banco de dados.
+    :return: Connection: Conexão com o banco de dados.
     """
     if _conn:
         return _conn
@@ -19,6 +20,7 @@ def conn():
 def close():
     """
     Fecha a conexão com o banco de dados.
+    :return: None
     """
     if _conn:
         _conn.close()
