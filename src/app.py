@@ -1,4 +1,4 @@
-from db import *
+from db.db import *
 from interface import *
 from users import *
 

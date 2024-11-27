@@ -1,8 +1,7 @@
 import customtkinter as ctk
-from tkinter import *
 
-from db import *
 from users import *
+from utils import *
 
 # Configurando o tema do CustomTkinter
 ctk.set_appearance_mode("System")  # Modo Claro ou Escuro
@@ -85,7 +84,7 @@ def consultar_imc(conn, janela):
         user_data = consulta_por_nome(conn.cursor(), nome)
         if user_data:
             imc = calcula_IMC(user_data[4], user_data[3])
-            lbl_resultado.configure(text=f"O IMC de {nome} é: {imc:.1f} ({classificacao_IMC(imc)})", text_color="white")
+            lbl_resultado.configure(text=f"O IMC de {nome} é: {imc:.1f} ({classifica_IMC(imc)})", text_color="white")
             entry_nome.delete(0, "end")  # Limpa o campo de entrada
         else:
             lbl_resultado.configure(text="Erro: Usuário não encontrado!", text_color="gray")
