@@ -1,65 +1,48 @@
-# calcula IMC
+# Calcula IMC 📊
 
-Este projeto é um sistema simples de gerenciamento de usuários utilizando **Python** e **SQLite**. Ele permite criar uma tabela de usuários, inserir dados e realizar consultas específicas, como calcular o IMC de um usuário.
+O Calcula IMC é uma aplicação desenvolvida em Python com interface gráfica, que permite gerenciar usuários e calcular o Índice de Massa Corporal (IMC) de forma prática e intuitiva. A aplicação utiliza SQLite3 como banco de dados e CustomTkinter para a interface gráfica.
 
-## Funcionalidades
+## 📋 Funcionalidades
+- **Cadastro de Usuários:** Insira informações como nome, idade, altura e peso.
+- **Consulta de IMC:** Realize consultas do IMC por nome e veja a classificação de acordo com os padrões de saúde.
+- **Visualização de Usuários:** Exiba uma tabela com todos os usuários cadastrados e suas informações.
+- **Interface Intuitiva:** Interface gráfica amigável e responsiva, adaptada para diferentes modos (claro e escuro).
+- **Armazenamento Local:** Persistência de dados usando o banco de dados SQLite.
 
-- **Criação de Tabela**: Cria a tabela `users` no banco de dados SQLite.
-- **Inserção de Dados**: Adiciona múltiplos usuários à tabela.
-- **Consulta de Usuários**: Permite buscar usuários pelo nome.
-- **Cálculo de IMC**: Calcula e exibe o Índice de Massa Corporal (IMC) de um usuário específico.
+## 🛠️ Tecnologias Utilizadas
+- Python 🐍
+- SQLite3 (banco de dados)
+- CustomTkinter (interface gráfica)
 
-## Estrutura do Projeto
+## 🗂️ Estrutura do Projeto
 
-- **`main.py`**: Arquivo principal que coordena as operações do sistema.
-- **`db.py`**: Contém funções para manipulação do banco de dados, como criação de tabelas e conexões.
-- **`users.py`**: Define funções relacionadas aos usuários, como inserção, consulta e cálculo do IMC.
+```plaintext
+📁 calcula-imc-ipluso
+├── 📂 assets                 # Recursos visuais
+├── 📂 db
+│   ├── db.py                 # Funções para manipulação do banco de dados
+├── 📂 src
+│   ├── app.py                # Arquivo principal da aplicação
+│   ├── interface.py          # Funções relacionadas a interface grafica
+│   ├── users.py              # Funções relacionadas aos usuários
+│   └── utils.py              # Funções auxiliares
+└── README.md                 # Documentação do projeto
+```
 
-## Pré-requisitos
+## 📊 Cálculo de IMC
 
-- Python 3.x instalado.
-- Biblioteca SQLite3 (inclusa no Python).
+O cálculo de IMC é realizado pela fórmula:
+> IMC = Peso (kg) / [Altura (m)]²
 
-## Como Executar
+### Classificação do IMC:
+| Faixa de IMC         | Classificação            |
+|-----------------------|--------------------------|
+| Abaixo de 18,5       | Abaixo do peso           |
+| 18,5 – 24,9          | Peso normal             |
+| 25,0 – 29,9          | Sobrepeso               |
+| 30,0 – 34,9          | Obesidade Grau I        |
+| 35,0 – 39,9          | Obesidade Grau II       |
+| Acima de 40,0        | Obesidade Grau III      |
 
-1. Clone este repositório:
-   ```bash
-   git clone https://github.com/seuusuario/projeto-gerenciador-usuarios.git
-   cd projeto-gerenciador-usuarios
-   ```
-
-2. Instale as dependências, se necessário (opcional).
-
-3. Execute o arquivo `main.py`:
-   ```bash
-   python main.py
-   ```
-
-## Exemplos de Uso
-
-Ao executar o programa, ele:
-
-1. Cria uma tabela chamada `users` no banco de dados.
-2. Insere os seguintes usuários:
-   - Ana Silva
-   - Carlos Souza
-   - Mariana Costa
-   - João Pereira
-   - Lucia Mendes
-3. Calcula e exibe o IMC de **Ana Silva**.
-
-## Estrutura da Tabela `users`
-
-| Campo   | Tipo      | Descrição              |
-|---------|-----------|------------------------|
-| `nome`  | TEXT      | Nome do usuário        |
-| `idade` | INTEGER   | Idade do usuário       |
-| `altura`| REAL      | Altura do usuário (m)  |
-| `peso`  | REAL      | Peso do usuário (kg)   |
-
-## Explicação do Código Principal (`main.py`)
-
-- **`criar_tabela_users(conn())`**: Cria a tabela `users` caso não exista.
-- **`inserir_users(conn(), lista_users)`**: Insere uma lista de usuários no banco.
-- **`consulta_por_nome(cursor(), 'Ana Silva')`**: Consulta os dados de um usuário pelo nome.
-- **`print_IMC(...)`**: Calcula e exibe o IMC do usuário.
+## Preview
+![Preview](assets/preview.png)
