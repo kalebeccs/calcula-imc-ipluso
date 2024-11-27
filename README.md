@@ -6,29 +6,13 @@ O Calcula IMC é uma aplicação desenvolvida em Python com interface gráfica, 
 - **Cadastro de Usuários:** Insira informações como nome, idade, altura e peso.
 - **Consulta de IMC:** Realize consultas do IMC por nome e veja a classificação de acordo com os padrões de saúde.
 - **Visualização de Usuários:** Exiba uma tabela com todos os usuários cadastrados e suas informações.
-- **Interface Intuitiva:** Interface gráfica amigável e responsiva, adaptada para diferentes modos (claro e escuro).
+- **Interface Intuitiva:** Interface gráfica amigável e personalizável , adaptada para diferentes modos claro e escuro.
 - **Armazenamento Local:** Persistência de dados usando o banco de dados SQLite.
 
 ## 🛠️ Tecnologias Utilizadas
 - Python 🐍
-- SQLite3 (banco de dados)
+- SQLite3 (banco de dados local)
 - CustomTkinter (interface gráfica)
-
-## 🗂️ Estrutura do Projeto
-
-```plaintext
-📁 calcula-imc-ipluso
-├── 📂 assets                 # Recursos visuais
-├── 📂 db
-│   ├── db.py                 # Funções para manipulação do banco de dados
-├── 📂 src
-│   ├── app.py                # Arquivo principal da aplicação
-│   ├── interface.py          # Funções relacionadas a interface grafica
-│   ├── users.py              # Funções relacionadas aos usuários
-│   └── utils.py              # Funções auxiliares
-├── README.md                 # Documentação do projeto
-└── requirements.txt          # Dependências do projeto
-```
 
 ## ⚙️ Como Executar o Projeto
 
@@ -55,6 +39,22 @@ pip install -r requirements.txt
 ### 4. Execute a aplicação:
 ```bash
 python src/app.py
+```
+
+## 🗂️ Estrutura do Projeto
+
+```plaintext
+📁 calcula-imc-ipluso
+├── 📂 assets                 # Recursos visuais
+├── 📂 db
+│   ├── db.py                 # Funções para manipulação do banco de dados
+├── 📂 src
+│   ├── app.py                # Arquivo principal da aplicação
+│   ├── interface.py          # Funções da interface gráfica
+│   ├── users.py              # Gerenciamento de usuários
+│   └── utils.py              # Funções auxiliares
+├── README.md                 # Documentação do projeto
+└── requirements.txt          # Dependências do projeto
 ```
 
 ## 📊 Cálculo de IMC
