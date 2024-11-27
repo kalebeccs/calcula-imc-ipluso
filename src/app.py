@@ -1,7 +1,8 @@
-from db.db import *
-from interface import *
-from users import *
+from db.db import conn, close
+from interface import interface_principal
+from users import criar_tabela_users, inserir_users, ler_users
 
+# Dados de exemplo
 lista_users = [
     ('Ana Silva', 28, 1.65, 60.0),
     ('Carlos Souza', 35, 1.75, 80.0),
@@ -15,11 +16,17 @@ lista_users = [
     ('Ricardo Alves', 45, 1.80, 88.6)
 ]
 
+def main():
+    """
+    Ponto de entrada principal do programa.
+    :return: None
+    """
+    try:
+        criar_tabela_users(conn(), True)
+        inserir_users(conn(), lista_users)
+        interface_principal(conn())
+    finally:
+        close()
+
 if __name__ == "__main__":
-    criar_tabela_users(conn(), True)
-
-    inserir_users(conn(), lista_users)
-
-    interface_principal(conn())
-    
-    close()
+    main()
