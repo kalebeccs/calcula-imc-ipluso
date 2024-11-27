@@ -11,7 +11,7 @@ ctk.set_default_color_theme("blue")
 def criar_janela():
     janela = ctk.CTk()
     janela.title("Gerenciador de Usuários - IMC")
-    janela.geometry("500x400")  # Largura x Altura
+    janela.geometry("640x480")  # Largura x Altura
     return janela
 
 def interface_principal(conn):
@@ -21,15 +21,38 @@ def interface_principal(conn):
     titulo = ctk.CTkLabel(janela, text="Bem-vindo ao Sistema de IMC", font=("Arial", 20))
     titulo.pack(pady=20)
 
+    # Visualização da tabela
+    tabela = ctk.CTkScrollableFrame(janela, width=580, height=250)
+    tabela.pack(pady=10, padx=10)
+    # Cabeçalhos da tabela
+    ctk.CTkLabel(tabela, text="ID", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=0, padx=5, pady=2)
+    ctk.CTkLabel(tabela, text="Nome", font=("Arial", 12, "bold"), anchor="w", width=150).grid(row=0, column=1, padx=5, pady=2)
+    ctk.CTkLabel(tabela, text="Idade", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=2, padx=5, pady=2)
+    ctk.CTkLabel(tabela, text="Altura (m)", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=3, padx=5, pady=2)
+    ctk.CTkLabel(tabela, text="Peso (kg)", font=("Arial", 12, "bold"), anchor="center", width=50).grid(row=0, column=4, padx=5, pady=2)
+    users = ler_users(conn.cursor())
+    if users:
+        for i, user in enumerate(users):
+            # Criação de colunas com as informações do usuário
+            ctk.CTkLabel(tabela, text=f"{user[0]}", anchor="center", width=50).grid(row=i + 1, column=0, padx=5, pady=2)
+            ctk.CTkLabel(tabela, text=f"{user[1]}", anchor="w", width=150).grid(row=i + 1, column=1, padx=5, pady=2)
+            ctk.CTkLabel(tabela, text=f"{user[2]}", anchor="center", width=50).grid(row=i + 1, column=2, padx=5, pady=2)
+            ctk.CTkLabel(tabela, text=f"{user[3]:.2f}", anchor="center", width=50).grid(row=i + 1, column=3, padx=5,
+                                                                                        pady=2)
+            ctk.CTkLabel(tabela, text=f"{user[4]:.2f}", anchor="center", width=50).grid(row=i + 1, column=4, padx=5,
+                                                                                        pady=2)
+    else:
+        ctk.CTkLabel(tabela, text="Nenhum usuário cadastrado!", anchor="center", font=("Arial", 12)).grid(row=1,
+                                                                                                          column=0,
+                                                                                                          columnspan=5,
+                                                                                                          pady=10)
+
     # Botões para ações
     btn_inserir = ctk.CTkButton(janela, text="Inserir Usuário", command=lambda: inserir_usuario_tela(conn))
     btn_inserir.pack(pady=10)
 
     btn_consultar = ctk.CTkButton(janela, text="Consultar IMC", command=lambda: consultar_imc_tela(conn))
     btn_consultar.pack(pady=10)
-
-    btn_consultar_users = ctk.CTkButton(janela, text="Ver Usuários Cadastrados", command=lambda: consultar_users_tela(conn))
-    btn_consultar_users.pack(pady=10)
 
     btn_sair = ctk.CTkButton(janela, text="Sair", command=janela.quit)
     btn_sair.pack(pady=20)
@@ -50,7 +73,7 @@ def inserir_usuario_tela(conn):
 
     janela_inserir = ctk.CTkToplevel()
     janela_inserir.title("Inserir Usuário")
-    janela_inserir.geometry("400x300")
+    janela_inserir.geometry("640x480")
 
     ctk.CTkLabel(janela_inserir, text="Nome:").pack()
     entry_nome = ctk.CTkEntry(janela_inserir)
@@ -89,7 +112,7 @@ def consultar_imc_tela(conn):
 
     janela_consultar = ctk.CTkToplevel()
     janela_consultar.title("Consultar IMC")
-    janela_consultar.geometry("420x310")
+    janela_consultar.geometry("640x480")
 
     # Título
     ctk.CTkLabel(janela_consultar, text="Consultar IMC", font=("Arial", 16)).pack(pady=10)
@@ -111,32 +134,3 @@ def consultar_imc_tela(conn):
 
     # Botão para fechar a janela
     ctk.CTkButton(janela_consultar, text="Fechar", command=janela_consultar.destroy).pack(pady=20)
-
-
-
-def consultar_users_tela(conn):
-    # Função para obter os usuários e exibi-los
-    def mostrar_users():
-        users = ler_users(cursor())
-        if users:
-            for user in users:
-                texto = f"ID: {user[0]} | Nome: {user[1]} | Idade: {user[2]} | Altura: {user[3]} | Peso: {user[4]}"
-                ctk.CTkLabel(janela_consulta, text=texto, anchor="w").pack(padx=10, pady=5)
-        else:
-            ctk.CTkLabel(janela_consulta, text="Nenhum usuário cadastrado!", anchor="w").pack(pady=10)
-
-    # Criar a janela de consulta
-    janela_consulta = ctk.CTkToplevel()
-    janela_consulta.title("Usuários Cadastrados")
-    janela_consulta.geometry("600x400")
-
-    # Título
-    titulo = ctk.CTkLabel(janela_consulta, text="Usuários Cadastrados", font=("Arial", 16))
-    titulo.pack(pady=20)
-
-    # Mostrar usuários
-    mostrar_users()
-
-    # Botão para fechar a janela
-    btn_fechar = ctk.CTkButton(janela_consulta, text="Fechar", command=janela_consulta.destroy)
-    btn_fechar.pack(pady=20)
