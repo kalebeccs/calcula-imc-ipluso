@@ -1,16 +1,16 @@
+IMC_CLASSIFICACAO = [
+    (18.5, 'Abaixo do peso'),
+    (25, 'Peso normal'),
+    (30, 'Sobrepeso'),
+    (35, 'Obesidade Grau 1'),
+    (40, 'Obesidade Grau 2'),
+]
+
 def calcula_IMC(peso, altura):
     return peso / altura ** 2
 
 def classifica_IMC(imc):
-    if imc < 18.5:
-        return 'Abaixo do peso'
-    elif 18.5 <= imc < 25:
-        return 'Peso normal'
-    elif 25 <= imc < 30:
-        return 'Sobrepeso'
-    elif 30 <= imc < 35:
-        return 'Obesidade Grau 1'
-    elif 35 <= imc < 40:
-        return 'Obesidade Grau 2'
-    else:
-        return 'Obesidade Grau 3'
+    for limite, classificacao in IMC_CLASSIFICACAO:
+        if imc < limite:
+            return classificacao
+    return 'Obesidade Grau 3'
