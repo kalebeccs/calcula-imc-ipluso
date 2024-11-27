@@ -26,7 +26,35 @@ O Calcula IMC é uma aplicação desenvolvida em Python com interface gráfica, 
 │   ├── interface.py          # Funções relacionadas a interface grafica
 │   ├── users.py              # Funções relacionadas aos usuários
 │   └── utils.py              # Funções auxiliares
-└── README.md                 # Documentação do projeto
+├── README.md                 # Documentação do projeto
+└── requirements.txt          # Dependências do projeto
+```
+
+## ⚙️ Como Executar o Projeto
+
+### Pré-requisitos
+Certifique-se de ter o **Python 3.10** ou superior instalado e as dependências necessárias. 
+
+### 1. Clone o repositório:
+```bash
+git clone https://github.com/kalebeccs/calcula-imc-ipluso.git
+cd calcula-imc-ipluso
+```
+
+### 2. Crie um ambiente virtual:
+```bash
+python -m venv venv
+source venv/bin/activate  # No Windows, use: venv\Scripts\activate
+```
+
+### 3. Instale as dependências:
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Execute a aplicação:
+```bash
+python src/app.py
 ```
 
 ## 📊 Cálculo de IMC
