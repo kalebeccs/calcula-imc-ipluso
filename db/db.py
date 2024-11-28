@@ -28,13 +28,22 @@ def close():
     else:
         print("Conexão já estava fechada.")
 
-def initialize_db():
+def initialize_db(conn):
     """
     Inicializa o banco de dados criando as tabelas.
     :return: None
     """
     try:
-        criar_tabela_users(conn(), True)
+        conn.cursor().execute('''
+            CREATE TABLE IF NOT EXISTS users (
+            pk_user INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            idade INTEGER NOT NULL,
+            altura REAL NOT NULL,
+            peso REAL NOT NULL
+            )
+        ''')
+        conn.commit()
         print("Banco de dados inicializado com sucesso!")
     except sqlite3.Error as e:
         print(f"Erro ao inicializar o banco de dados: {e}")
