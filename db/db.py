@@ -1,5 +1,4 @@
 import sqlite3
-from users import criar_tabela_users
 
 # Conexão inicial
 try:
