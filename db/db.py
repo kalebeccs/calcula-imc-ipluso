@@ -1,4 +1,5 @@
 import sqlite3
+from users import criar_tabela_users
 
 # Conexão inicial
 try:
@@ -26,3 +27,14 @@ def close():
         _conn.close()
     else:
         print("Conexão já estava fechada.")
+
+def initialize_db():
+    """
+    Inicializa o banco de dados criando as tabelas.
+    :return: None
+    """
+    try:
+        criar_tabela_users(conn(), True)
+        print("Banco de dados inicializado com sucesso!")
+    except sqlite3.Error as e:
+        print(f"Erro ao inicializar o banco de dados: {e}")

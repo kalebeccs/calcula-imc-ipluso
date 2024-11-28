@@ -16,14 +16,26 @@ lista_users = [
     ('Ricardo Alves', 45, 1.80, 88.6)
 ]
 
+def inicializar_banco(conn):
+    """
+    Configura o banco de dados: cria tabelas e insere dados iniciais, se necessário.
+    """
+    criar_tabela_users(conn, drop=False)  # Não apaga os dados existentes
+    
+    # Verifica se já existem usuários cadastrados
+    if not ler_users(conn.cursor()):
+        print("Inserindo dados iniciais...")
+        inserir_users(conn, lista_users)
+    else:
+        print("Dados já existentes no banco.")
+
 def main():
     """
     Ponto de entrada principal do programa.
     :return: None
     """
     try:
-        criar_tabela_users(conn(), True)
-        inserir_users(conn(), lista_users)
+        inicializar_banco(conn())
         interface_principal(conn())
     finally:
         close()
