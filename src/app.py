@@ -1,6 +1,6 @@
 from db.db import conn, close
 from interface import interface_principal
-from users import criar_tabela_users, inserir_users, ler_users
+from users import criar_tabela_users, inserir_users
 
 # Dados de exemplo
 lista_users = [
