@@ -1,5 +1,6 @@
 import sqlite3
 import customtkinter as ctk
+from tkinter import PhotoImage
 from users import inserir_user, ler_users, consulta_por_nome
 from utils import calcula_IMC, classifica_IMC
 
@@ -15,6 +16,7 @@ def criar_janela():
     janela = ctk.CTk()
     janela.title("Gerenciador de Usuários - IMC")
     janela.geometry("640x610")
+    janela.iconbitmap("../assets/icon.ico")
     return janela
 
 def interface_principal(conn:sqlite3.Connection):
